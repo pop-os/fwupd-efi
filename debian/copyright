@@ -6,6 +6,7 @@ Files: debian/*
 Copyright:  2021 Mario Limonciello <superm1@gmail.com>
 License: LGPL-2.1+
 
+Files: *
 License: LGPL-2.1+
  This package is free software; you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as published by
