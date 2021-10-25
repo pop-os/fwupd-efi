@@ -31,7 +31,7 @@ else
 endif
 
 %:
-	dh $@ --with gir
+	dh $@
 
 override_dh_auto_clean:
 	rm -fr obj-*
