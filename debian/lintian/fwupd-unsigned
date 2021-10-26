@@ -1,0 +1,2 @@
+fwupd-unsigned: executable-not-elf-or-script usr/libexec/fwupd/efi/*.efi
+fwupd-unsigned: portable-executable-missing-security-features usr/libexec/fwupd/efi/*.efi SafeSEH
