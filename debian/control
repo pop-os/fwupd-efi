@@ -7,6 +7,7 @@ Uploaders: Steve McIntyre <93sam@debian.org>,
 Build-Depends: gnu-efi [amd64 arm64 armhf i386],
                meson,
                mingw-w64-tools [amd64 arm64 armhf i386],
+               debhelper | debhelper-compat
 Standards-Version: 4.5.0
 Section: admin
 Homepage: https://github.com/fwupd/fwupd-efi
@@ -30,7 +31,7 @@ Description: Firmware update daemon (Unsigned EFI binaries)
 
 Package: fwupd-unsigned-dev
 Architecture: all
-Depends: fwupd-unsigned (= ${binary:Version})
+Depends: fwupd-unsigned (= ${source:Version})
 Description: Firmware update daemon (Development information)
  fwupd is a daemon to allow session software to update device firmware.
  You can either use a GUI software manager like GNOME Software to view and
