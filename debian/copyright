@@ -14,7 +14,7 @@ Files:  *.metainfo.xml
 Copyright: Richard Hughes <richard@hughsie.com>
 License: CC0-1.0
 
-Files: debian/
+Files: debian/*
 Copyright:  2021 Mario Limonciello <superm1@gmail.com>
 License: LGPL-2.1+
 
