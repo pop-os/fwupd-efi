@@ -57,8 +57,8 @@ ifeq (debian,$(SB_STYLE))
 		file1=$$(echo $$file | sed "s,SIGNARCH,$(DEB_HOST_ARCH),"); \
 		mv -v $$file $$file1; \
 	done
-	debian/gen_signing_changelog $(TMPLDIR)/source-template/debian fwupd $(DEB_HOST_ARCH)
-	debian/gen_signing_json $(TMPLDIR) fwupd ${DEB_HOST_ARCH}
+	debian/gen_signing_changelog $(TMPLDIR)/source-template/debian fwupd-efi $(DEB_HOST_ARCH)
+	debian/gen_signing_json $(TMPLDIR) ${DEB_HOST_ARCH}
 endif
 
 override_dh_fixperms:
