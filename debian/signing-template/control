@@ -6,13 +6,13 @@ Uploaders: Steve McIntyre <93sam@debian.org>,
            Mario Limonciello <superm1@gmail.com>
 Build-Depends: debhelper (>= 9.0.0),
 	       sbsigntool [amd64 arm64 armhf i386],
-	       fwupd (>= SIGNVERSION) [SIGNARCH],
-	       fwupd (<< NEXTVERSION) [SIGNARCH]
+	       fwupd-unsigned (>= SIGNVERSION) [SIGNARCH],
+	       fwupd-unsigned (<< NEXTVERSION) [SIGNARCH]
 Standards-Version: 4.5.0
 Section: libs
-Homepage: https://github.com/fwupd/fwupd
-Vcs-Git: https://salsa.debian.org/efi-team/fwupd.git
-Vcs-Browser: https://salsa.debian.org/efi-team/fwupd
+Homepage: https://github.com/fwupd/fwupd-efi
+Vcs-Git: https://salsa.debian.org/efi-team/fwupd-efi.git
+Vcs-Browser: https://salsa.debian.org/efi-team/fwupd-efi
 
 Package: fwupd-SIGNARCH-signed
 Section: admin
@@ -20,9 +20,9 @@ Architecture: SIGNARCH
 Provides: fwupd-signed
 Depends: ${shlibs:Depends},	
 	 ${misc:Depends},
-	 fwupd (>= SIGNVERSION),
-	 fwupd (<< NEXTVERSION)
-Built-Using: fwupd (= SIGNVERSION)
+	 fwupd-signed (>= SIGNVERSION),
+	 fwupd-signed (<< NEXTVERSION)
+Built-Using: fwupd-signed (= SIGNVERSION)
 Description: Tools to manage UEFI firmware updates (signed)
  fwupd provides functionality to update system firmware. It has been
  initially designed to update firmware using UEFI capsule updates, but

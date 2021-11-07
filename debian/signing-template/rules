@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
-PACKAGE_NAME  := fwupd
+PACKAGE_NAME  := fwupd-unsigned
 SIG_PKG_NAME  := fwupd-SIGNARCH-signed
 SIGNATURE_DIR := debian/signatures/$(PACKAGE_NAME)
 BINARY        := $(shell find /usr/libexec/fwupd/efi -name '*.efi' | xargs basename)
