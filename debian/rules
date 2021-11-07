@@ -61,6 +61,12 @@ ifeq (debian,$(SB_STYLE))
 	debian/gen_signing_json $(TMPLDIR) fwupd ${DEB_HOST_ARCH}
 endif
 
+override_dh_fixperms:
+	dh_fixperms
+	# This does *not* need to be executable - it's for the
+	# firmware to run once installed
+	chmod 644 debian/*/usr/libexec/fwupd/efi/*.efi
+
 override_dh_builddeb:
 	dh_builddeb
 ifeq (ubuntu,$(SB_STYLE))
