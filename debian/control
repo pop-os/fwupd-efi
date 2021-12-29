@@ -20,6 +20,8 @@ Depends: ${misc:Depends},
          ${shlibs:Depends},
 Recommends: fwupd-signed
 Multi-Arch: foreign
+Breaks: fwupd (<< 1.7.1)
+Replaces: fwupd (<< 1.7.1)
 Description: Firmware update daemon (Unsigned EFI binaries)
  fwupd is a daemon to allow session software to update device firmware.
  You can either use a GUI software manager like GNOME Software to view and

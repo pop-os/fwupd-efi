@@ -1,3 +1,10 @@
+fwupd-efi (1:1.1-2) UNRELEASED; urgency=medium
+
+  * Breaks/Replaces on fwupd for the transition of fwupd binary.
+    Closes: #1002518
+
+ -- Mario Limonciello <superm1@gmail.com>  Tue, 28 Dec 2021 20:51:52 -0600
+
 fwupd-efi (1:1.1-1) unstable; urgency=medium
 
   * Initial release
