@@ -46,8 +46,8 @@ Description: Firmware update daemon (Development information)
 
 Package: fwupd-amd64-signed-template
 Architecture: amd64
-Depends: ${shlibs:Depends}, 
-         ${misc:Depends}, 
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
          make | build-essential | dpkg-dev
 Description: Template for signed fwupd package
  This package is used to control code signing by the Debian signing
@@ -55,8 +55,8 @@ Description: Template for signed fwupd package
 
 Package: fwupd-i386-signed-template
 Architecture: i386
-Depends: ${shlibs:Depends}, 
-         ${misc:Depends}, 
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
          make | build-essential | dpkg-dev
 Description: Template for signed fwupd package
  This package is used to control code signing by the Debian signing
@@ -64,8 +64,8 @@ Description: Template for signed fwupd package
 
 Package: fwupd-armhf-signed-template
 Architecture: armhf
-Depends: ${shlibs:Depends}, 
-         ${misc:Depends}, 
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
          make | build-essential | dpkg-dev
 Description: Template for signed fwupd package
  This package is used to control code signing by the Debian signing
