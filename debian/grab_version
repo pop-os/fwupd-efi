@@ -13,6 +13,9 @@ chomp $this_version;
 # Remove any trailing +b - ignore binNMUs
 $this_version =~ s/\+b\d+$//;
 
+# Remove the epoch
+$this_version =~ s/.*://;
+
 # Code borrowed from dch for incrementing a version number, let's
 # assume it works!
 $this_version =~ /^(.*?)([a-yA-Y][a-zA-Z]*|\d*)$/;
