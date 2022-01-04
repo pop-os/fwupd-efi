@@ -5,7 +5,7 @@ Uploaders: Steve McIntyre <93sam@debian.org>,
            Matthias Klumpp <mak@debian.org>,
            Mario Limonciello <superm1@gmail.com>
 Build-Depends: debhelper (>= 9.0.0),
-	       sbsigntool [amd64 arm64 armhf i386],
+	       sbsigntool [amd64 arm64 armhf i386 riscv64],
 	       fwupd-unsigned (>= SIGNVERSION) [SIGNARCH],
 	       fwupd-unsigned (<< NEXTVERSION) [SIGNARCH]
 Standards-Version: 4.5.0

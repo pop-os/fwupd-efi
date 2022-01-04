@@ -5,7 +5,7 @@ Uploaders: Steve McIntyre <93sam@debian.org>,
            Matthias Klumpp <mak@debian.org>,
            Mario Limonciello <superm1@gmail.com>
 Build-Depends: debhelper (>= 13),
-               gnu-efi [amd64 arm64 armhf i386],
+               gnu-efi [amd64 arm64 armhf i386 riscv64],
                meson,
                mingw-w64-tools [amd64 arm64 armhf i386],
 Standards-Version: 4.6.0.1
@@ -15,7 +15,7 @@ Vcs-Git: https://salsa.debian.org/efi-team/fwupd-efi.git
 Vcs-Browser: https://salsa.debian.org/efi-team/fwupd-efi
 
 Package: fwupd-unsigned
-Architecture: amd64 arm64 armhf i386
+Architecture: amd64 arm64 armhf i386 riscv64
 Depends: ${misc:Depends},
          ${shlibs:Depends},
 Recommends: fwupd-signed
@@ -32,7 +32,7 @@ Description: Firmware update daemon (Unsigned EFI binaries)
  This package provides the EFI binaries used for UEFI capsule updates
 
 Package: fwupd-unsigned-dev
-Architecture: amd64 arm64 armhf i386
+Architecture: amd64 arm64 armhf i386 riscv64
 Depends: ${misc:Depends},
          fwupd-unsigned (= ${binary:Version})
 Description: Firmware update daemon (Development information)
@@ -73,6 +73,15 @@ Description: Template for signed fwupd package
 
 Package: fwupd-arm64-signed-template
 Architecture: arm64
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         make | build-essential | dpkg-dev
+Description: Template for signed fwupd package
+ This package is used to control code signing by the Debian signing
+ service.
+
+Package: fwupd-riscv64-signed-template
+Architecture: riscv64
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          make | build-essential | dpkg-dev
