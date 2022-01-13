@@ -1,0 +1,13 @@
+.debhelper/
+debhelper-build-stamp
+files
+fwupd-*-signed-template.debhelper.log
+fwupd-*-signed-template.substvars
+fwupd-*-signed-template/
+fwupd-unsigned-dev.debhelper.log
+fwupd-unsigned-dev.substvars
+fwupd-unsigned-dev/
+fwupd-unsigned.debhelper.log
+fwupd-unsigned.substvars
+fwupd-unsigned/
+tmp/
