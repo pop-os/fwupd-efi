@@ -1,4 +1,4 @@
-fwupd-efi (1:1.1-4) UNRELEASED; urgency=medium
+fwupd-efi (1:1.1-4) unstable; urgency=medium
 
   * Build for riscv64 as well. (LP:# 1939138)
 
