@@ -79,12 +79,3 @@ Depends: ${shlibs:Depends},
 Description: Template for signed fwupd package
  This package is used to control code signing by the Debian signing
  service.
-
-Package: fwupd-riscv64-signed-template
-Architecture: riscv64
-Depends: ${shlibs:Depends},
-         ${misc:Depends},
-         make | build-essential | dpkg-dev
-Description: Template for signed fwupd package
- This package is used to control code signing by the Debian signing
- service.
