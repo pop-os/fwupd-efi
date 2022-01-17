@@ -1,3 +1,11 @@
+fwupd-efi (1:1.1-5) unstable; urgency=medium
+
+  * Revert riscv64.  There are still other compilation problems that
+    need to be fixed upstream and this can be revisited after
+    fixing it there. (LP: #1939138)
+
+ -- Mario Limonciello <superm1@gmail.com>  Mon, 17 Jan 2022 10:02:44 -0600
+
 fwupd-efi (1:1.1-4) unstable; urgency=medium
 
   * Build for riscv64 as well. (LP:# 1939138)
