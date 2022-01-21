@@ -4,7 +4,7 @@ Maintainer: Debian EFI <debian-efi@lists.debian.org>
 Uploaders: Steve McIntyre <93sam@debian.org>,
            Matthias Klumpp <mak@debian.org>,
            Mario Limonciello <superm1@gmail.com>
-Build-Depends: debhelper (>= 13),
+Build-Depends: debhelper (>= 12),
                gnu-efi [amd64 arm64 armhf i386],
                meson,
                mingw-w64-tools [amd64 arm64 armhf i386],
