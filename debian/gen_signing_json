@@ -17,7 +17,7 @@ rm -f $OUT
 
 printf '{\n' >> $OUT
 printf '  "packages": {\n' >> $OUT
-printf '    "%s": {\n' "${SOURCE}" >> $OUT
+printf '    fwupd-efi": {\n' >> $OUT
 printf '      "trusted_certs": [],\n' >> $OUT
 printf '      "files": [ \n' >> $OUT
 printf '        {"sig_type": "efi", "file": "%s"}\n' "${BINARY}" >> $OUT
