@@ -1,8 +1,9 @@
-fwupd-efi (1:1.2-1) UNRELEASED; urgency=medium
+fwupd-efi (1:1.2-1) unstable; urgency=medium
 
   * Update to 1.2 version.
+  * Fix the JSON file generation for fwupd/fwupd-efi split (Closes: #1004321)
 
- -- Mario Limonciello <superm1@gmail.com>  Mon, 24 Jan 2022 16:22:26 -0600
+ -- Mario Limonciello <superm1@gmail.com>  Mon, 24 Jan 2022 16:31:44 -0600
 
 fwupd-efi (1:1.1-5) unstable; urgency=medium
 
