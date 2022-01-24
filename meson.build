@@ -1,11 +1,12 @@
 project('fwupd-efi', 'c',
-  version : '1.1',
+  version : '1.2',
   license : 'LGPL-2.1+',
   meson_version : '>=0.53.0',
   default_options : ['warning_level=2', 'c_std=c99'],
 )
 
 cc = meson.get_compiler('c')
+objcopy = find_program('objcopy')
 
 prefix = get_option('prefix')
 libdir = join_paths(prefix, get_option('libdir'))
