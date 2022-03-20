@@ -5,7 +5,9 @@ export LC_ALL := C.UTF-8
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 export DEB_LDFLAGS_MAINT_STRIP=-Wl,-Bsymbolic-functions
 
-CONFARGS =
+-include /usr/share/dpkg/buildtools.mk
+
+CONFARGS = '-Defi-cc=$(CC)'
 
 ifneq ($(CI),)
 	CONFARGS += --werror --wrap-mode=default
