@@ -4,13 +4,15 @@
  * SPDX-License-Identifier: LGPL-2.1+
  */
 
+#include "config.h"
+
 #include <efi.h>
 #include <efilib.h>
 
 #include "fwup-cleanups.h"
 #include "fwup-common.h"
-#include "fwup-efi.h"
 #include "fwup-debug.h"
+#include "fwup-efi.h"
 
 #define UNUSED __attribute__((__unused__))
 #define GNVN_BUF_SIZE			1024
@@ -454,12 +456,16 @@ fwup_apply_capsules(EFI_CAPSULE_HEADER **capsules,
 
 	rc = uefi_call_wrapper(RT->QueryCapsuleCapabilities, 4, capsules,
 				num_updates, &max_capsule_size, reset);
-	if (EFI_ERROR(rc)) {
-		fwup_warning(L"Could not query capsule capabilities: %r", rc);
-		return rc;
+	if (rc == EFI_SUCCESS) {
+		fwup_debug(L"QueryCapsuleCapabilities: %r max: %ld reset:%d",
+			   rc,
+			   max_capsule_size,
+			   *reset);
+	} else {
+		fwup_warning(L"QueryCapsuleCapabilities failed, assuming EfiResetWarm: %r", rc);
+		*reset = EfiResetWarm;
 	}
-	fwup_debug(L"QueryCapsuleCapabilities: %r max: %ld reset:%d",
-	           rc, max_capsule_size, *reset);
+
 	fwup_debug(L"Capsules: %d", num_updates);
 
 	fwup_msleep(1 * SECONDS);
@@ -543,6 +549,9 @@ efi_main(EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 
 	/* if SHIM_DEBUG is set, fwup_info info for our attached debugger */
 	fwup_debug_hook();
+
+	/* show the version to screen */
+	fwup_info(L"fwupd-efi version " PACKAGE_VERSION);
 
 	/* step 1: find and validate update state variables */
 	/* XXX TODO:

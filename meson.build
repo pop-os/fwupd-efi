@@ -1,12 +1,17 @@
 project('fwupd-efi', 'c',
-  version : '1.2',
+  version : '1.4',
   license : 'LGPL-2.1+',
   meson_version : '>=0.53.0',
   default_options : ['warning_level=2', 'c_std=c99'],
 )
 
+conf = configuration_data()
+conf.set_quoted('PACKAGE_VERSION', meson.project_version())
+
 cc = meson.get_compiler('c')
+ld = cc.get_linker_id()
 objcopy = find_program('objcopy')
+objcopy_version = run_command(objcopy, '--version').stdout().split('\n')[0].split(' ')[-1]
 
 prefix = get_option('prefix')
 libdir = join_paths(prefix, get_option('libdir'))
@@ -36,6 +41,11 @@ endif
 if get_option('efi_sbat_distro_id') == ''
     warning('-Defi_sbat_distro_id is unset, see README.md')
 endif
+
+configure_file(
+  output : 'config.h',
+  configuration : conf
+)
 
 pkgg = import('pkgconfig')
 pkgg.generate(

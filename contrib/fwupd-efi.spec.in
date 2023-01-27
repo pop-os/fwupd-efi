@@ -14,9 +14,11 @@ Source0:   http://people.freedesktop.org/~hughsient/releases/%{name}-%{version}.
 # these are the only architectures supporting UEFI SecureBoot
 ExclusiveArch: x86_64 aarch64
 
+BuildRequires: gcc
 BuildRequires: meson
 BuildRequires: gnu-efi-devel
 BuildRequires: pesign
+BuildRequires: python3-pefile
 
 %description
 fwupd is a daemon to allow session software to update device firmware, and this
@@ -64,5 +66,4 @@ rm -vf %{fwup_efi_fn}.tmp
 %{_libdir}/pkgconfig/fwupd-efi.pc
 
 %changelog
-* #LONGDATE# Richard Hughes <richard@hughsie.com> #VERSION#-0.#BUILD##ALPHATAG#
-- Update from git
+%autochangelog

@@ -1,8 +1,6 @@
 generate_sbat = find_program('generate_sbat.py', native: true)
 generate_binary = find_program('generate_binary.py', native: true)
 
-efi_cc = get_option('efi-cc')
-efi_ld = get_option('efi-ld')
 efi_ldsdir = get_option('efi-ldsdir')
 efi_incdir = get_option('efi-includedir')
 
@@ -20,11 +18,8 @@ endif
 
 efi_libdir = get_option('efi-libdir')
 if efi_libdir == ''
-  cmd = 'cd /usr/lib/$(@0@ -print-multi-os-directory) && pwd'.format(efi_cc)
-  ret = run_command('sh', '-c', cmd)
-  if ret.returncode() == 0
-    efi_libdir = ret.stdout().strip()
-  endif
+  multi = run_command(cc.cmd_array(), '-print-multi-os-directory').stdout().strip()
+  efi_libdir = join_paths('/usr/lib/', multi)
 endif
 
 have_gnu_efi = gnu_efi_path_arch != '' and efi_libdir != ''
@@ -68,10 +63,27 @@ else
     error('Cannot find @0@'.format(arch_lds))
   endif
 endif
+efi_crtdir = efi_ldsdir
+
+# If using objcopy, crt0 must not include the PE/COFF header
+if run_command('grep', '-q', 'coff_header', join_paths(efi_crtdir, arch_crt), check: false).returncode() == 0
+        coff_header_in_crt0 = true
+else
+        coff_header_in_crt0 = false
+endif
+
+# older objcopy for Aarch64 and ARM32 are not EFI capable.
+# Use 'binary' instead, and add required symbols manually.
+if host_cpu == 'arm' or (host_cpu == 'aarch64' and (objcopy_version.version_compare ('< 2.38') or coff_header_in_crt0))
+  objcopy_manualsymbols = true
+  generate_binary_extra = ['--objcopy-manualsymbols']
+else
+  objcopy_manualsymbols = false
+  generate_binary_extra = []
+endif
 
 # is the system linker script new enough to know about SBAT?
 # i.e. gnu-efi with https://github.com/vathpela/gnu-efi/pull/14 has been installed
-efi_crtdir = efi_ldsdir
 if get_option('efi_sbat_distro_id') != ''
   cmd = run_command('grep', '-q', 'sbat', join_paths(efi_ldsdir, arch_lds))
   if cmd.returncode() != 0
@@ -81,12 +93,12 @@ if get_option('efi_sbat_distro_id') != ''
 endif
 
 # is the system crt0 for arm and aarch64 new enough to know about SBAT?
-if host_cpu == 'aarch64' or host_cpu == 'arm'
+if objcopy_manualsymbols
   if get_option('efi_sbat_distro_id') != ''
     arch_crt_source = 'crt0-efi-@0@.S'.format(gnu_efi_path_arch)
-    cmd = run_command('grep', '-q', 'sbat', join_paths(efi_crtdir, arch_crt_source))
+    cmd = run_command('grep', '-q', 'sbat', join_paths(efi_crtdir, arch_crt))
     if cmd.returncode() != 0
-      warning('Cannot find SBAT section in @0@, using local copy'.format(join_paths(efi_crtdir, arch_crt_source)))
+      warning('Cannot find SBAT section in @0@, using local copy'.format(join_paths(efi_crtdir, arch_crt)))
       # The gnuefi libraries are still needed
       efi_libdir = efi_crtdir
       efi_crtdir = join_paths(meson.current_build_dir(), 'crt0')
@@ -121,6 +133,7 @@ compile_args = ['-Og',
                 '-Wno-address-of-packed-member',
                 '-grecord-gcc-switches',
                 '-DDEBUGDIR="@0@"'.format(debugdir),
+                '-I.',
                 '-isystem', efi_incdir,
                 '-isystem', join_paths(efi_incdir, gnu_efi_path_arch)]
 if get_option('werror')
@@ -149,37 +162,38 @@ efi_ldflags = ['-T',
                '-L', efi_crtdir,
                '-L', efi_libdir,
                join_paths(efi_crtdir, arch_crt)]
-if host_cpu == 'aarch64' or host_cpu == 'arm'
-  # Aarch64 and ARM32 don't have an EFI capable objcopy. Use 'binary'
-  # instead, and add required symbols manually.
+
+if objcopy_manualsymbols
+  # older objcopy for Aarch64 and ARM32 are not EFI capable.
+  # Use 'binary' instead, and add required symbols manually.
   efi_ldflags += ['--defsym=EFI_SUBSYSTEM=0xa']
   efi_format = ['-O', 'binary']
 else
   efi_format = ['--target=efi-app-@0@'.format(gnu_efi_arch)]
 endif
 
-libgcc_file_name = run_command(efi_cc, '-print-libgcc-file-name').stdout().strip()
+libgcc_file_name = run_command(cc.cmd_array(), '-print-libgcc-file-name').stdout().strip()
 efi_name = 'fwupd@0@.efi'.format(EFI_MACHINE_TYPE_NAME)
 
 o_file1 = custom_target('fwupdate.o',
                         input : 'fwupdate.c',
                         output : 'fwupdate.o',
-                        command : [efi_cc, '-c', '@INPUT@', '-o', '@OUTPUT@']
+                        command : [cc.cmd_array(), '-c', '@INPUT@', '-o', '@OUTPUT@']
                                   + compile_args)
 o_file2 = custom_target('fwup-debug.o',
                         input : 'fwup-debug.c',
                         output : 'fwup-debug.o',
-                        command : [efi_cc, '-c', '@INPUT@', '-o', '@OUTPUT@']
+                        command : [cc.cmd_array(), '-c', '@INPUT@', '-o', '@OUTPUT@']
                                   + compile_args)
 o_file3 = custom_target('fwup-efi.o',
                         input : 'fwup-efi.c',
                         output : 'fwup-efi.o',
-                        command : [efi_cc, '-c', '@INPUT@', '-o', '@OUTPUT@']
+                        command : [cc.cmd_array(), '-c', '@INPUT@', '-o', '@OUTPUT@']
                                   + compile_args)
 o_file4 = custom_target('fwup-common.o',
                         input : 'fwup-common.c',
                         output : 'fwup-common.o',
-                        command : [efi_cc, '-c', '@INPUT@', '-o', '@OUTPUT@']
+                        command : [cc.cmd_array(), '-c', '@INPUT@', '-o', '@OUTPUT@']
                                   + compile_args)
 
 o_file5 = custom_target('fwup-sbat.o',
@@ -187,7 +201,8 @@ o_file5 = custom_target('fwup-sbat.o',
                         command : [
                           generate_sbat,
                           '@OUTPUT@',
-                          '--cc', efi_cc,
+                          '--cc', ' '.join(cc.cmd_array()),
+                          '--cflags', ' '.join(compile_args),
                           '--objcopy', objcopy,
                           '--project-name', meson.project_name(),
                           '--project-version', meson.project_version(),
@@ -211,7 +226,7 @@ endif
 so = custom_target('fwup.so',
                    input : [o_file1, o_file2, o_file3, o_file4, o_file5],
                    output : 'fwup.so',
-                   command : [efi_ld, '-o', '@OUTPUT@'] +
+                   command : [ld, '-o', '@OUTPUT@'] +
                              efi_ldflags + ['@INPUT@'] +
                              ['-lefi', '-lgnuefi', libgcc_file_name],
                    depends: fwupd_so_deps)
@@ -226,7 +241,8 @@ app = custom_target(efi_name,
                       '--os', host_machine.system(),
                       '--objcopy', objcopy,
                       '--genpeimg', genpeimg.found() ? genpeimg : ''
-                    ],
+                    ]
+                    + generate_binary_extra,
                     install : true,
                     install_dir : efi_app_location)
 
