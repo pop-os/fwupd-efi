@@ -1,3 +1,16 @@
+fwupd-efi (1:1.4-1) unstable; urgency=medium
+
+  [ Mario Limonciello ]
+  * New upstream release.
+  * Notable changes:
+    - Enforces NX by default.
+    - Improvements for aarch64 builds.
+
+  [ Jelmer Vernooij ]
+  * Specify branch in Vcs-Git/Vcs-Browser headers
+
+ -- Mario Limonciello <superm1@gmail.com>  Fri, 27 Jan 2023 09:15:57 -0600
+
 fwupd-efi (1:1.2-3) unstable; urgency=medium
 
   [ Mario Limonciello ]
