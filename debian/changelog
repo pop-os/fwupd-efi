@@ -1,3 +1,9 @@
+fwupd-efi (1:1.4-1pop0) jammy; urgency=medium
+
+  * Pop!_OS patches
+
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 04 Oct 2024 09:35:22 -0600
+
 fwupd-efi (1:1.4-1) unstable; urgency=medium
 
   [ Mario Limonciello ]
