@@ -91,10 +91,10 @@ endif
 
 # older objcopy for Aarch64, ARM32 and RISC-V are not EFI capable.
 # Use 'binary' instead, and add required symbols manually.
-if host_cpu == 'arm' or host_cpu == 'riscv64' or (host_cpu == 'aarch64' and (objcopy_version.version_compare ('< 2.38') or coff_header_in_crt0 or uswid.found()))
-  objcopy_manualsymbols = true
-  generate_binary_extra = ['--objcopy-manualsymbols']
-elif host_cpu == 'loongarch64' and (objcopy_version.version_compare ('< 2.41') or coff_header_in_crt0)
+if ( host_cpu == 'arm'
+  or (host_cpu == 'riscv64'     and (objcopy_version.version_compare ('< 2.42') or coff_header_in_crt0))
+  or (host_cpu == 'aarch64'     and (objcopy_version.version_compare ('< 2.38') or coff_header_in_crt0 or uswid.found()))
+  or (host_cpu == 'loongarch64' and (objcopy_version.version_compare ('< 2.41') or coff_header_in_crt0)) )
   objcopy_manualsymbols = true
   generate_binary_extra = ['--objcopy-manualsymbols']
 else
@@ -197,6 +197,9 @@ elif host_cpu == 'x86'
                    '-mno-mmx',
                    '-mno-red-zone',
                    '-m32']
+elif host_cpu == 'loongarch64'
+  compile_args += ['-mno-lsx',
+                   '-mno-lasx']
 # no special cases for aarch64 or arm
 endif
 
@@ -226,7 +229,7 @@ if objcopy_manualsymbols
   endif
   efi_format = ['-O', 'binary']
 else
-  efi_format = ['--target=efi-app-@0@'.format(gnu_efi_arch)]
+  efi_format = ['--output-target=efi-app-@0@'.format(gnu_efi_arch)]
 endif
 
 libgcc_file_name = run_command(cc.cmd_array(), '-print-libgcc-file-name', check: true).stdout().strip()
@@ -305,16 +308,11 @@ if efi_crtdir == join_paths(meson.current_build_dir(), 'crt0')
   fwupd_so_deps += [o_crt0]
 endif
 
-efi_cc_ldflags = []
-foreach flag : efi_ldflags
-  efi_cc_ldflags += ['-Wl,' + flag]
-endforeach
-
 so = custom_target('fwup.so',
                    input : o_files,
                    output : 'fwup.so',
-                   command : [cc.cmd_array(), '-nostdlib', '-o', '@OUTPUT@'] +
-                             efi_cc_ldflags + ['@INPUT@'] +
+                   command : [cc_ld, '-nostdlib', '-o', '@OUTPUT@'] +
+                             efi_ldflags + ['@INPUT@'] +
                              ['-lefi', '-lgnuefi', libgcc_file_name],
                    depends: fwupd_so_deps)
 

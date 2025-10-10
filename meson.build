@@ -1,5 +1,5 @@
 project('fwupd-efi', 'c',
-  version : '1.7',
+  version : '1.8',
   license : 'LGPL-2.1+',
   meson_version : '>=0.62.0',
   default_options : ['warning_level=2', 'c_std=c99'],
@@ -9,6 +9,7 @@ conf = configuration_data()
 conf.set_quoted('PACKAGE_VERSION', meson.project_version())
 
 cc = meson.get_compiler('c')
+cc_ld = find_program(cc.get_linker_id())
 objcopy = find_program('objcopy')
 objcopy_version = run_command(objcopy, '--version', check: true).stdout().split('\n')[0].split(' ')[-1]
 
