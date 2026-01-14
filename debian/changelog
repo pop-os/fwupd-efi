@@ -1,3 +1,13 @@
+fwupd-efi (1:1.8-2) unstable; urgency=medium
+
+  * Team upload
+  * Source-only upload (Closes: #1125468)
+
+  [ Helmut Grohne ]
+  * Fix FTCBFS: Pass a suitable efi-cc to meson (Closes: #1008025)
+
+ -- Bastian Germann <bage@debian.org>  Wed, 14 Jan 2026 22:43:19 +0100
+
 fwupd-efi (1:1.8-1) unstable; urgency=medium
 
   * New upstream version (1.8)
