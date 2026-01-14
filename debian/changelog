@@ -1,3 +1,10 @@
+fwupd-efi (1:1.8-3) unstable; urgency=medium
+
+  * Team upload
+  * Revert "Fix FTCBFS: Pass a suitable efi-cc to meson"
+
+ -- Bastian Germann <bage@debian.org>  Thu, 15 Jan 2026 00:12:33 +0100
+
 fwupd-efi (1:1.8-2) unstable; urgency=medium
 
   * Team upload
