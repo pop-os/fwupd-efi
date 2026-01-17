@@ -1,0 +1,22 @@
+From: Helmut Grohne <helmut@subdivi.de>
+Date: Thu, 15 Jan 2026 12:42:53 +0100
+Subject: fwupd-efi will FTBFS when gnu-efi gets multiarched
+
+fwupd-efi fails to cross build from source, because it fails locating
+gnu-efi using pkg-config. gnu-efi still installs to /usr/lib and that's
+not a location pkg-config searches during cross compilation.
+
+Make it detect gnu-efi's location from pkg-config.
+---
+--- fwupd-efi-1.8.orig/efi/meson.build
++++ fwupd-efi-1.8/efi/meson.build
+@@ -37,6 +37,9 @@
+ 
+ efi_libdir = get_option('efi-libdir')
+ if efi_libdir == ''
++  efi_libdir = gnuefi.get_pkgconfig_variable('libdir')
++endif
++if efi_libdir == ''
+   fs = import('fs')
+   multi = run_command(cc.cmd_array(), '-print-multi-os-directory', check: true).stdout().strip()
+   efi_libdir = join_paths('/usr/lib/', multi)
