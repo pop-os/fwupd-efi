@@ -1,3 +1,10 @@
+fwupd-efi (1:1.8-4) unstable; urgency=medium
+
+  * Team upload
+  * Prepare cross-compilation (Closes: #1125739)
+
+ -- Bastian Germann <bage@debian.org>  Wed, 21 Jan 2026 00:27:12 +0100
+
 fwupd-efi (1:1.8-3) unstable; urgency=medium
 
   * Team upload
